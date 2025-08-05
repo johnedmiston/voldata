@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scroll Test</title>
+    <style>
+        .container {
+            width: 400px;
+            height: 300px;
+            overflow: auto;
+            border: 2px solid #333;
+            padding: 20px;
+        }
+        
+        table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            white-space: nowrap;
+        }
+        
+        th {
+            background: #667eea;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>John Doe</td>
+                    <td>john@example.com</td>
+                    <td>123-456-7890</td>
+                    <td>123 Main Street</td>
+                    <td>New York</td>
+                    <td>NY</td>
+                    <td>USA</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Jane Smith</td>
+                    <td>jane@example.com</td>
+                    <td>098-765-4321</td>
+                    <td>456 Oak Avenue</td>
+                    <td>Los Angeles</td>
+                    <td>CA</td>
+                    <td>USA</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 

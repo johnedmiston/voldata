@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Volunteer Database</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📊 Volunteer Management System</h1>
+      <p>Manage and view volunteer data</p>
+    </div>
+
+    <div class="controls">
+      <button id="fileInput">
+        📁 Select Excel File
+      </button>
+      <button id="viewRecordsBtn">
+        👥 View Records
+      </button>
+      <button id="addVolunteerBtn">
+        ➕ Add New Volunteer
+      </button>
+    </div>
+
+    <div class="filters-container">
+      <div class="filters-header">
+        <div class="filters-title">
+          <h3>🔍 Filters</h3>
+          <button id="toggleFiltersBtn" class="toggle-filters-btn">▼ Hide Filters</button>
+        </div>
+        <div class="filters-actions">
+          <button id="applyFiltersBtn" class="apply-filters-btn">Apply Filters</button>
+          <button id="clearFiltersBtn" class="clear-filters-btn">Clear All</button>
+        </div>
+      </div>
+      <div class="filters-content" id="filtersContent">
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label for="emailFilter">Email:</label>
+            <input type="text" id="emailFilter" placeholder="Filter by email...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="phoneFilter">Phone:</label>
+            <input type="text" id="phoneFilter" placeholder="Filter by phone...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="firstNameFilter">First Name:</label>
+            <input type="text" id="firstNameFilter" placeholder="Filter by first name...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="lastNameFilter">Last Name:</label>
+            <input type="text" id="lastNameFilter" placeholder="Filter by last name...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="opportunityFilter">Opportunity:</label>
+            <input type="text" id="opportunityFilter" placeholder="Filter by opportunity...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="statusFilter">Status:</label>
+            <select id="statusFilter">
+              <option value="">All statuses</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="cityFilter">City:</label>
+            <input type="text" id="cityFilter" placeholder="Filter by city...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="stateFilter">State:</label>
+            <input type="text" id="stateFilter" placeholder="Filter by state...">
+          </div>
+          
+          <div class="filter-group">
+            <label for="countryFilter">Country:</label>
+            <input type="text" id="countryFilter" placeholder="Filter by country...">
+          </div>
+          
+          <div class="filter-group date-range">
+            <label>Connection Date:</label>
+            <div class="date-inputs">
+              <input type="date" id="dateFromFilter" placeholder="From...">
+              <input type="date" id="dateToFilter" placeholder="To...">
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <label for="commentsFilter">Comments:</label>
+            <input type="text" id="commentsFilter" placeholder="Filter by comments...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="recordsContainer" class="records-container">
+      <div class="no-records">
+        Click "View Records" to see imported data
+      </div>
+    </div>
+  </div>
+
+  <!-- Volunteer Profile Modal -->
+  <div id="profileModal" class="profile-modal">
+    <div class="profile-modal-content">
+      <div class="profile-modal-header">
+        <h2>👤 Volunteer Profile</h2>
+        <button id="closeProfileBtn" class="close-profile-btn">✕</button>
+      </div>
+      <div class="profile-content">
+        <div class="profile-avatar">
+          <div class="avatar-icon">👤</div>
+        </div>
+        <div class="profile-info">
+          <div id="profileDetails"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add New Volunteer Modal -->
+  <div id="addVolunteerModal" class="profile-modal">
+    <div class="profile-modal-content">
+      <div class="profile-modal-header">
+        <h2>➕ Add New Volunteer</h2>
+        <button id="closeAddVolunteerBtn" class="close-profile-btn">✕</button>
+      </div>
+      <div class="profile-content">
+        <div class="profile-avatar">
+          <div class="avatar-icon">👤</div>
+        </div>
+        <div class="profile-info">
+          <form id="addVolunteerForm">
+            <div class="profile-section">
+              <h4>👤 Personal Information</h4>
+              <div class="info-item">
+                <span class="info-label">First Name:</span>
+                <input type="text" class="info-input" name="first_name" placeholder="Enter first name" required>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Last Name:</span>
+                <input type="text" class="info-input" name="last_name" placeholder="Enter last name" required>
+              </div>
+            </div>
+            
+            <div class="profile-section">
+              <h4>📧 Contact Information</h4>
+              <div class="info-item">
+                <span class="info-label">Email:</span>
+                <input type="email" class="info-input" name="email" placeholder="Enter email" required>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Phone:</span>
+                <input type="tel" class="info-input" name="phone" placeholder="Enter phone">
+              </div>
+            </div>
+            
+            <div class="profile-section">
+              <h4>🏢 Opportunity Details</h4>
+              <div class="info-item">
+                <span class="info-label">Opportunity:</span>
+                <input type="text" class="info-input" name="opportunity_title" placeholder="Enter opportunity">
+              </div>
+              <div class="info-item">
+                <span class="info-label">Status:</span>
+                <select class="info-input" name="connection_status">
+                  <option value="">Select status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
+                </select>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Connection Date:</span>
+                <input type="date" class="info-input" name="connection_date">
+              </div>
+              <div class="info-item">
+                <span class="info-label">Shifts Selected:</span>
+                <input type="text" class="info-input" name="shifts_selected" placeholder="Enter shifts">
+              </div>
+            </div>
+            
+            <div class="profile-section">
+              <h4>📍 Address Information</h4>
+              <div class="info-item">
+                <span class="info-label">Street Address:</span>
+                <input type="text" class="info-input" name="street_address" placeholder="Enter street address">
+              </div>
+              <div class="info-item">
+                <span class="info-label">Street Address 2:</span>
+                <input type="text" class="info-input" name="street_address2" placeholder="Enter street address 2">
+              </div>
+              <div class="info-item">
+                <span class="info-label">City:</span>
+                <input type="text" class="info-input" name="city" placeholder="Enter city">
+              </div>
+              <div class="info-item">
+                <span class="info-label">State:</span>
+                <input type="text" class="info-input" name="state" placeholder="Enter state">
+              </div>
+              <div class="info-item">
+                <span class="info-label">ZIP:</span>
+                <input type="text" class="info-input" name="zip" placeholder="Enter ZIP">
+              </div>
+              <div class="info-item">
+                <span class="info-label">Country:</span>
+                <input type="text" class="info-input" name="country" placeholder="Enter country">
+              </div>
+            </div>
+            
+            <div class="profile-section">
+              <h4>💬 Comments</h4>
+              <div class="comments-input-container">
+                <textarea class="comments-input" name="comments" placeholder="Enter comments"></textarea>
+              </div>
+            </div>
+            
+            <div class="profile-actions">
+              <button type="button" id="cancelAddVolunteerBtn" class="cancel-profile-btn">Cancel</button>
+              <button type="submit" id="saveAddVolunteerBtn" class="save-profile-btn">Add Volunteer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<!-- Scripts -->
+<script src="js/globals.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/table.js"></script>
+<script src="js/pagination.js"></script>
+<script src="js/profile.js"></script>
+<script src="js/volunteer.js"></script>
+<script src="js/events.js"></script>
+<script src="script.js"></script>
+
+</html>
