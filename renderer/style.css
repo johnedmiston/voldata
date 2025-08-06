@@ -89,6 +89,16 @@ button {
     box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
 }
 
+#cleanPhoneNumbersBtn {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+}
+
+#cleanPhoneNumbersBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+}
+
 /* Estilos para a barra de filtros */
 .filters-container {
     background: #f8f9fa;

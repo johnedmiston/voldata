@@ -100,6 +100,12 @@ document.addEventListener('DOMContentLoaded', function () {
       addNewVolunteer();
     }
   });
+
+  // Add event listener for clean phone numbers button
+  const cleanPhoneNumbersBtn = document.getElementById('cleanPhoneNumbersBtn');
+  if (cleanPhoneNumbersBtn) {
+    cleanPhoneNumbersBtn.addEventListener('click', cleanPhoneNumbers);
+  }
 });
 
 // Event listener for view records button

@@ -7,4 +7,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   updateVolunteer: (volunteer) => ipcRenderer.invoke('update-volunteer', volunteer),
   addVolunteer: (volunteer) => ipcRenderer.invoke('add-volunteer', volunteer),
   getImportStats: () => ipcRenderer.invoke('get-import-stats'),
+  cleanPhoneNumbers: () => ipcRenderer.invoke('clean-phone-numbers'),
 });

@@ -114,7 +114,7 @@ function insertVolunteers(volunteers) {
         // Normalize volunteer data
         const normalizedVolunteer = {
           email: volunteer['Email'] || '',
-          phone: volunteer['Phone'] || '',
+          phone: String(volunteer['Phone'] || '').replace(/\.0$/, ''), // Remove .0 from phone numbers
           first_name: volunteer['First Name'] || '',
           last_name: volunteer['Last Name'] || '',
           opportunity_title: volunteer['Opportunity Title'] || '',
@@ -207,7 +207,7 @@ function addVolunteer(volunteer) {
 
     stmt.run(
       volunteer.email || '',
-      volunteer.phone || '',
+      String(volunteer.phone || '').replace(/\.0$/, ''), // Remove .0 from phone numbers
       volunteer.first_name || '',
       volunteer.last_name || '',
       volunteer.opportunity_title || '',
@@ -265,7 +265,7 @@ function updateVolunteer(volunteer) {
 
     stmt.run(
       volunteer.email || '',
-      volunteer.phone || '',
+      String(volunteer.phone || '').replace(/\.0$/, ''), // Remove .0 from phone numbers
       volunteer.first_name || '',
       volunteer.last_name || '',
       volunteer.opportunity_title || '',
@@ -305,4 +305,21 @@ function getImportStats() {
   });
 }
 
-module.exports = { insertVolunteers, updateVolunteer, addVolunteer, getImportStats };
+// Function to clean existing phone numbers with .0 suffix
+function cleanPhoneNumbers() {
+  return new Promise((resolve, reject) => {
+    db.run(`
+      UPDATE volunteers 
+      SET phone = REPLACE(phone, '.0', '') 
+      WHERE phone LIKE '%.0'
+    `, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+module.exports = { insertVolunteers, updateVolunteer, addVolunteer, getImportStats, cleanPhoneNumbers };

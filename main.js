@@ -3,7 +3,7 @@ const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
 // Import helper functions
-const { insertVolunteers, updateVolunteer, addVolunteer, getImportStats } = require('./database/db');
+const { insertVolunteers, updateVolunteer, addVolunteer, getImportStats, cleanPhoneNumbers } = require('./database/db');
 const { parseSpreadsheet } = require('./xlsx/import');
 
 function createWindow() {
@@ -115,6 +115,16 @@ ipcMain.handle('get-import-stats', async () => {
         return { success: true, totalRecords };
     } catch (error) {
         console.error('Failed to get import stats:', error);
+        return { success: false, error: error.message };
+    }
+});
+
+ipcMain.handle('clean-phone-numbers', async () => {
+    try {
+        await cleanPhoneNumbers();
+        return { success: true, message: 'Phone numbers cleaned successfully' };
+    } catch (error) {
+        console.error('Failed to clean phone numbers:', error);
         return { success: false, error: error.message };
     }
 });
