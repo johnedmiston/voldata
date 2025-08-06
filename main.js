@@ -3,7 +3,7 @@ const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
 // Import helper functions
-const { insertVolunteers, updateVolunteer, addVolunteer } = require('./database/db');
+const { insertVolunteers, updateVolunteer, addVolunteer, getImportStats } = require('./database/db');
 const { parseSpreadsheet } = require('./xlsx/import');
 
 function createWindow() {
@@ -47,8 +47,12 @@ ipcMain.handle('select-file', async () => {
         if (!result.canceled && result.filePaths.length > 0) {
             const filePath = result.filePaths[0];
             const data = parseSpreadsheet(filePath);
-            insertVolunteers(data);
-            return { success: true };
+            const importResult = await insertVolunteers(data);
+            return { 
+                success: true, 
+                message: `Import completed! ${importResult.inserted} records inserted, ${importResult.duplicates} duplicates found, ${importResult.exactDuplicates} identical records ignored.`,
+                details: importResult
+            };
         } else {
             return { success: false, error: 'No file selected' };
         }
@@ -61,8 +65,12 @@ ipcMain.handle('select-file', async () => {
 ipcMain.handle('import-xlsx', async (event, filePath) => {
     try {
         const data = parseSpreadsheet(filePath);
-        insertVolunteers(data);
-        return { success: true };
+        const importResult = await insertVolunteers(data);
+        return { 
+            success: true, 
+            message: `Import completed! ${importResult.inserted} records inserted, ${importResult.duplicates} duplicates found, ${importResult.exactDuplicates} identical records ignored.`,
+            details: importResult
+        };
     } catch (error) {
         console.error('Failed to import spreadsheet:', error);
         return { success: false, error: error.message };
@@ -97,6 +105,16 @@ ipcMain.handle('add-volunteer', async (event, volunteer) => {
         return { success: true, volunteer: addedVolunteer };
     } catch (error) {
         console.error('Failed to add volunteer:', error);
+        return { success: false, error: error.message };
+    }
+});
+
+ipcMain.handle('get-import-stats', async () => {
+    try {
+        const totalRecords = await getImportStats();
+        return { success: true, totalRecords };
+    } catch (error) {
+        console.error('Failed to get import stats:', error);
         return { success: false, error: error.message };
     }
 });

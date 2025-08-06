@@ -4,7 +4,8 @@ A comprehensive Electron application for managing volunteer data with advanced f
 
 ## Features
 
-- **Data Import**: Import volunteer data from Excel files
+- **Data Import**: Import volunteer data from Excel files with duplicate checking
+- **Duplicate Prevention**: Automatic detection and prevention of duplicate records
 - **Advanced Filtering**: Filter by email, phone, name, opportunity, status, location, and date ranges
 - **Column Sorting**: Click on column headers to sort data alphabetically
 - **Pagination**: Navigate through large datasets with customizable records per page
@@ -12,6 +13,7 @@ A comprehensive Electron application for managing volunteer data with advanced f
 - **Add New Volunteers**: Manually add new volunteers through a form interface
 - **Responsive Design**: Works on different screen sizes
 - **Database Persistence**: All changes are saved to SQLite database
+- **Import Statistics**: Detailed reports on import operations
 
 ## Project Structure
 
@@ -124,6 +126,20 @@ Contains all event listeners and initialization:
 5. **Navigate**: Use pagination controls to browse large datasets
 6. **Edit Profiles**: Click "View Profile" to edit volunteer information
 7. **Add Volunteers**: Click "Add New Volunteer" to create new records
+
+## Duplicate Checking
+
+The system automatically prevents duplicate records during import:
+
+- **Exact Duplicates**: Records with identical data in all fields are ignored
+- **Email/Phone Duplicates**: Records with existing email or phone numbers are flagged
+- **Import Report**: After each import, a detailed report shows:
+  - Total records processed
+  - New records inserted
+  - Duplicates found
+  - Identical records ignored
+
+This ensures data integrity and prevents accidental re-imports of the same data.
 
 ## Technical Details
 

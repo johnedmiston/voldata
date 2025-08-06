@@ -6,4 +6,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   selectFile: () => ipcRenderer.invoke('select-file'),
   updateVolunteer: (volunteer) => ipcRenderer.invoke('update-volunteer', volunteer),
   addVolunteer: (volunteer) => ipcRenderer.invoke('add-volunteer', volunteer),
+  getImportStats: () => ipcRenderer.invoke('get-import-stats'),
 });
