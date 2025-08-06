@@ -66,7 +66,12 @@ function applyFilters() {
     
     // Date filter
     if (dateFromFilter || dateToFilter) {
-      const connectionDate = new Date(record.connection_date);
+      // Clean the date string by removing 'T' and time component for proper parsing
+      let cleanDate = record.connection_date;
+      if (cleanDate && typeof cleanDate === 'string' && cleanDate.includes('T')) {
+        cleanDate = cleanDate.split('T')[0];
+      }
+      const connectionDate = new Date(cleanDate);
       if (dateFromFilter && connectionDate < new Date(dateFromFilter)) return false;
       if (dateToFilter && connectionDate > new Date(dateToFilter + 'T23:59:59')) return false;
     }

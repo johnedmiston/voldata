@@ -187,7 +187,16 @@ function renderTable(records) {
           td.textContent = '-';
         }
       } else {
-        td.textContent = value || '-';
+        // Format date values to remove 'T' and time component
+        let displayValue = value || '-';
+        if (key.toLowerCase().includes('date') && value && value !== '-') {
+          // Remove 'T' and time component from date strings
+          if (typeof value === 'string' && value.includes('T')) {
+            displayValue = value.split('T')[0];
+          }
+        }
+        
+        td.textContent = displayValue;
         // Apply same widths as headers
         if (key.toLowerCase().includes('email')) {
           td.style.width = '200px';
