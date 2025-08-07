@@ -8,4 +8,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   addVolunteer: (volunteer) => ipcRenderer.invoke('add-volunteer', volunteer),
   getImportStats: () => ipcRenderer.invoke('get-import-stats'),
   cleanPhoneNumbers: () => ipcRenderer.invoke('clean-phone-numbers'),
+  exportToExcel: () => ipcRenderer.invoke('export-to-excel'),
 });

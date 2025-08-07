@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
+const XLSX = require('xlsx');
 
 // Import helper functions
 const { insertVolunteers, updateVolunteer, addVolunteer, getImportStats, cleanPhoneNumbers } = require('./database/db');
@@ -125,6 +126,64 @@ ipcMain.handle('clean-phone-numbers', async () => {
         return { success: true, message: 'Phone numbers cleaned successfully' };
     } catch (error) {
         console.error('Failed to clean phone numbers:', error);
+        return { success: false, error: error.message };
+    }
+});
+
+ipcMain.handle('export-to-excel', async () => {
+    try {
+        const db = new sqlite3.Database(path.join(__dirname, 'volunteers.db'));
+        
+        return new Promise((resolve, reject) => {
+            db.all('SELECT * FROM volunteers', (err, rows) => {
+                if (err) {
+                    db.close();
+                    reject(err);
+                    return;
+                }
+                
+                db.close();
+                
+                if (rows.length === 0) {
+                    resolve({ success: false, error: 'No data to export' });
+                    return;
+                }
+                
+                // Create workbook and worksheet
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(rows);
+                
+                // Add worksheet to workbook
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Volunteers');
+                
+                // Show save dialog
+                dialog.showSaveDialog({
+                    title: 'Export Volunteers to Excel',
+                    defaultPath: 'volunteers_export.xlsx',
+                    filters: [
+                        { name: 'Excel Files', extensions: ['xlsx'] },
+                        { name: 'All Files', extensions: ['*'] }
+                    ]
+                }).then((result) => {
+                    if (!result.canceled && result.filePath) {
+                        // Write file
+                        XLSX.writeFile(workbook, result.filePath);
+                        resolve({ 
+                            success: true, 
+                            message: `Successfully exported ${rows.length} records to ${result.filePath}`,
+                            filePath: result.filePath,
+                            recordCount: rows.length
+                        });
+                    } else {
+                        resolve({ success: false, error: 'Export cancelled' });
+                    }
+                }).catch((error) => {
+                    resolve({ success: false, error: error.message });
+                });
+            });
+        });
+    } catch (error) {
+        console.error('Failed to export to Excel:', error);
         return { success: false, error: error.message };
     }
 });

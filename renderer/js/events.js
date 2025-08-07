@@ -106,6 +106,12 @@ document.addEventListener('DOMContentLoaded', function () {
   if (cleanPhoneNumbersBtn) {
     cleanPhoneNumbersBtn.addEventListener('click', cleanPhoneNumbers);
   }
+
+  // Add event listener for export to Excel button
+  const exportDataBtn = document.getElementById('exportDataBtn');
+  if (exportDataBtn) {
+    exportDataBtn.addEventListener('click', exportToExcel);
+  }
 });
 
 // Event listener for view records button
